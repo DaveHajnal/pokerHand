@@ -4,49 +4,60 @@
     <meta charset="UTF-8">
     <title>Poker Hand</title>
 </head>
-<body>
+<body style="background-image: url('./img/pattern.jpg');">
 <h1>Póker kéz</h1>
 <hr>
-<h3> Az 52 lapból álló pakli:</h3>
-    <p id="deck"></p>
-<h3>A kevert pakli:</h3>
-    <p id="shuffled"></p>
-<h3>Az elemelt pakli</h3>
-    <p id="cut"></p>
-<hr>
+<div style="background-color:#3a6841;">
+    <section style="display: inline-block; margin-left: 2em;">
+        <h3> Az 52 lapból álló pakli:</h3>
+        <p id="deck" style="background-color:white; opacity: .7; border-radius: 2px; padding: .7em;"></p>
+        <h3>A kevert pakli:</h3>
+        <p id="shuffled" style="background-color:white; opacity: .7; border-radius: 2px; padding: .7em;"></p>
+        <h3>Az elemelt pakli</h3>
+        <p id="cut" style="background-color:white; opacity: .7; border-radius: 2px; padding: .7em;"></p>
+    </section>
+    <section style="display: inline-block; margin-left:3em; border-radius: 2px; padding: .7em;">
+        <h3>A kézben lévő lapok:</h3>git
+        <h4>Turn:</h4>
+        <h3 id="turn"></h3>
+        <h4>River:</h4>
+        <h3 id="river"></h3>
+        <h3>A hand:</h3>
+        <div style="border: 1px solid white; padding: .7em; border-radius: 3px; width: 100%; ">
+            <h2 id="hand"></h2>
+            <h2 id="handRes" ></h2>
+        </div>
+    </section>
+    <hr>
+</div>
+    <script>
 
-<h3>A kézben lévő lapok:</h3>
-<h4>Flop:</h4>
-    <h3 id="flop"></h3>
-<h4>Turn:</h4>
-    <h3 id="turn"></h3>
-<h4>River:</h4>
-    <h3 id="river"></h3>
-<h3>A hand:</h3>
-    <h2 id="hand"></h2>
-    <h2 id="handRes"></h2>
-<script>
     //üres póker pakli
     var deck = [];
 
     //figurák
-    var suits = ['&spades;', '&hearts;', '&diams;','&clubs;'];
+    var suits = [   '<span style="color: black;">&spades;</span>',
+                    '<span style="color: red;">&hearts;</span>',
+                    '<span style="color: red;">&diams;</span>',
+                    '<span style="color: black;">&clubs;</span>'
+                ];
+
     //a lapokhoz tartozó értékek
     var numbers = [
-                {"key": "2", value: 2},
-                {"key": "3", value: 3},
-                {"key": "4", value: 4},
-                {"key": "5", value: 5},
-                {"key": "6", value: 6},
-                {"key": "7", value: 7},
-                {"key": "8", value: 8},
-                {"key": "9", value: 9},
-                {"key": "X", value: 10},
-                {"key": "J", value: 11},
-                {"key": "Q", value: 12},
-                {"key": "K", value: 13},
-                {"key": "A", value: 14}
-                ];
+        {"key": "2", value: 2},
+        {"key": "3", value: 3},
+        {"key": "4", value: 4},
+        {"key": "5", value: 5},
+        {"key": "6", value: 6},
+        {"key": "7", value: 7},
+        {"key": "8", value: 8},
+        {"key": "9", value: 9},
+        {"key": "X", value: 10},
+        {"key": "J", value: 11},
+        {"key": "Q", value: 12},
+        {"key": "K", value: 13},
+        {"key": "A", value: 14}
+    ];
 
     // a pakli
     for (var i = 0; i < suits.length; i++) {
@@ -59,11 +70,17 @@
             deck.push(card);
         }
     }
+
     //pakli megjelenítése
-    console.log(deck.suits);
+    console.log(deck);
     for(var i = 0; i < deck.length; i++){
         document.querySelector('#deck').innerHTML +=
             deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
+        if(i === 12 || i === 25 || i === 38 ) {
+            document.querySelector('#deck').innerHTML += '<br>';
+        } else {
+            continue;
+        }
     }
 
     // keverés
@@ -75,21 +92,35 @@
     for(var i = 0; i < deck.length; i++) {
         document.querySelector('#shuffled').innerHTML +=
             deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
+        if(i === 12 || i === 38 ) {
+            document.querySelector('#shuffled').innerHTML += '<br>';
+        } else if(i === 25) {
+            document.querySelector('#shuffled').innerHTML += '<br><br>';
+        }
     }
 
     //a kevert pakli emelése
     var cut = deck.splice(26, 26);
     var cutted = cut.concat(deck);
 
-   for(var i = 0; i < cutted.length; i++) {
-       document.querySelector('#cut').innerHTML +=
-           cutted[i]['suit'] + ':' + cutted[i]['number'].key + ', ';
-   }
+    for(var i = 0; i < cutted.length; i++) {
+        document.querySelector('#cut').innerHTML +=
+            cutted[i]['suit'] + ':' + cutted[i]['number'].key + ', ';
+        if(i === 12 || i === 38 ) {
+            document.querySelector('#cut').innerHTML += '<br>';
+        } else if(i === 25) {
+            document.querySelector('#cut').innerHTML += '<br><br>';
+        }
+    }
+
+
 
     //a kézben lévő lapok kiválasztása
 
     // a flop: a pakli végéből egy égető lap leosztása után következő 3 lap
-    var flop = cutted.slice(-4,51);
+    var flop = (cutted.slice(-4,51));
+    flop.reverse();
+
     for(var i = 0; i < flop.length; i++) {
         document.querySelector('#flop').innerHTML +=
             flop[i]['suit'] + ':' + flop[i]['number'].key + ', ';
@@ -109,139 +140,227 @@
             river[i]['suit'] + ':' + river[i]['number'].key + ', ';
     }
 
-    //a hand együtt
+    //  ****HAND****
+
     var hand = flop.concat(turn, river);
-    for(var i = 0; i < hand.length; i++){
+    for(var i = 0; i < hand.length; i++) {
         document.querySelector('#hand').innerHTML +=
             hand[i]['suit'] + ':' + hand[i]['number'].key + ', ';
     }
-/*
-    //hand vizsgálata
-    var handsOrder = ['High Card', 'Pair', 'Double Pair', 'Three of Kind', 'Straight', 'Flush', 'Full House', 'Four of Kind', 'Straight Flush', 'Royal Flush'];
-    var valuesArray = [];
-    var suitsArray = [];
+    
+    //    ****TEST****
 
-    function checkHand() {
-        console.log('valami');
-        for(var i = 0; i < hand.length; i++) {
-            valuesArray += hand[i]['number'].value;
-        }
-        convertHand();
-        console.log(duplicateCards())
-        switch(duplicateCards()){
-            case '2':
-                hand = '1 Pair';
-                break;
-            case '22':
-                hand = '2 Pairs';
-                break;
-            case '3':
-                hand = '3 of a Kind';
-                break;
-            case '23':
-            case '32':
-                hand = 'Full House';
-                break;
-            case '4':
-                hand = '4 of a Kind';
-                break;
-            case '5':
-                hand = '5 of a Kind';
-                break;
-            default:
-                if(isStraight()){
-                    hand = 'Straight';
-                }
-                if(isAceStraight()){
-                    hand = 'Ace Straight';
-                }
-                break;
-        }
-        if(isFlush()){
-            if(hand){
-                hand += 'and Flush';
-            }
-            else{
-                hand = 'Flush';
-            }
-        }
-        if(!hand){
-            hand = 'nothing...';
-        }
-        document.querySelector('#hand').innerHTML = hand;
+//        const mockRoyalFlush = [
+//            {index: 8, suit: '&clubs;', number: {key: '10', value: 9}},
+//            {index: 65, suit: '&clubs;', number: {key: 'J', value: 13}},
+//            {index: 49, suit: '&clubs;', number: {key: 'Q', value: 12}},
+//            {index: 72, suit: '&clubs;', number: {key: 'K', value: 11}},
+//            {index: 33, suit: '&clubs;', number: {key: 'A', value: 10}},
+//        ];
+//
+//        var hand = mockRoyalFlush;
+
+    //test
+    console.log(hand);
+
+    //a pokerhand kiértékelése
+    var pokerHand = [];
+
+    for(var i = 0; i < hand.length; i++) {
+        pokerHand.push(hand[i]['number'].value);
     }
 
-    function convertHand(){
-        for(var i = 0; i < 5; i ++){
-            valuesArray[i] = hand[i] % 13;
-            suitsArray[i] = Math.floor(hand[i] / 13);
+    var pokerHandSuits = [];
+
+    for(var i = 0; i< hand.length; i++) {
+        pokerHandSuits.push(hand[i]['suit']);
+    }
+
+    //test
+    console.log(pokerHand);
+    console.log(pokerHandSuits);
+
+    //a pokerhand értékeinek sorba rendezése
+    pokerHand.sort(function(a, b){return a - b});
+
+    //test a sorba rendezés után
+    console.log(pokerHand);
+
+
+    //funkciók:
+    var firstCard   = pokerHand[0];
+    var secondCard  = pokerHand[1];
+    var thirdCard   = pokerHand[2];
+    var fourthCard  = pokerHand[3];
+    var lastCard    = pokerHand[4];
+
+    //straight func
+    var isStraight = function(a,b,c,d,e) {
+        if (b === a + 1 && c === b + 1 && d === c + 1 && e === d + 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 
-    function isFlush(){
-        for(var i = 0; i < 4; i ++){
-            if(suitsArray[i] != suitsArray[i+1]){
-                return false;
-            }
+    //same func
+    var isSame = function(a,b,c,d,e) {
+        if(a===b && b===c && c===d && d===e) {
+            return true;
+        }else {
+            return false;
         }
-        return true;
     }
 
-    function isStraight(){
-        var lowest = getLowest();
-        for(var i = 1; i < 5; i++){
-            if(occurrencesOf(lowest + i) != 1){
-                return false
-            }
+    //test
+    console.log('sor? --->' + isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard));
+    console.log('azonos szimbólum? ---> ' + isSame(pokerHandSuits[0],pokerHandSuits[1],pokerHandSuits[2],pokerHandSuits[3],pokerHandSuits[4]));
+
+    //Royalflush func
+    var isRoyalFlush = function(lastCard) {
+        if ((lastCard === 14) &&
+            (isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
+            (isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4]))) {
+            return true;
+        } else {
+            return false;
         }
-        return true;
     }
 
-    function isAceStraight(){
-        var lowest = 9;
-        for(var i = 1; i < 4; i++){
-            if(occurrencesOf(lowest + i) != 1){
-                return false
-            }
+    //test
+    console.log('royalflush? ---> ' + isRoyalFlush(lastCard));
+
+    //Straightflush func
+    var isStraightFlush = function() {
+        if( (lastCard !== 14) &&
+            (isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
+            (isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4]))) {
+            return true;
+        }else {
+            return false;
         }
-        return occurrencesOf(1) == 0;
     }
 
-    function getLowest(){
-        var min = 12;
-        for(var i = 0; i < valuesArray.length; i++){
-            min = Math.min(min, valuesArray[i]);
+    //test
+    console.log('straightflush? ---> ' + isStraightFlush(lastCard));
+
+    //Poker func
+    var isPoker = function(firstCard, fourthCard) {
+        if(((firstCard === fourthCard) || (secondCard === lastCard))) {
+            return true;
+        }else {
+            return false;
         }
-        return min;
     }
 
-    function duplicateCards(){
-        var occurrencesFound = [];
-        var result = "";
-        for(var i = 0; i < valuesArray.length; i++){
-            var occurrences = occurrencesOf(valuesArray[i]);
-            if(occurrences > 1 && occurrencesFound.indexOf(valuesArray[i]) == -1){
-                result += occurrences;
-                occurrencesFound.push(valuesArray[i]);
-            }
+    //test
+    console.log('poker? ---> ' + isPoker(firstCard, fourthCard));
+
+    //Straight func
+    var str = function() {
+        if ((isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
+            (!isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4]))) {
+            return true;
+        } else {
+            return false;
         }
-        return result;
     }
 
-    function occurrencesOf(n){
+    //test
+    console.log('straight? ---> ' + str());
+
+    //Flush func
+    var isFlush =function(){
+        if((isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4])) &&
+            (!isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard))) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //test
+    console.log('flushkapitány ? --->' + isFlush());
+
+    //Drill func
+    var isDrill = function() {
         var count = 0;
-        var index = 0;
-        do{
-            index = valuesArray.indexOf(n, index) + 1;
-            if(index == 0){
-                break;
+        for (var i = 0; i < pokerHand.length - 1; i++) {
+            if (pokerHand[i] === pokerHand[i + 2]) {
+                count++
             }
-            else{
-                count ++;
+        }
+        return count === 1;
+    }
+
+    //test
+    console.log('Drill e vagy ? ---> ' + isDrill());
+
+    //Full func
+    var isFull = function() {
+        if (((firstCard === secondCard) && (thirdCard === lastCard)) ||
+            ((firstCard === thirdCard) && (fourthCard === lastCard))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //test
+    console.log('full-e vagy? ---> ' + isFull());
+
+    //two pair func
+    var twoPairs = function() {
+        var count = 0;
+        for(var i = 0; i < pokerHand.length-1; i++) {
+            if((pokerHand[i] === pokerHand[i+1]) &&
+                (pokerHand[i] !== pokerHand[i+2])){
+                count++
             }
-        } while(index < valuesArray.length);
-        return count;
-*/
+        }
+        return count === 2;
+    }
+
+    //test
+    console.log('2 pár vagy-e? ---> ' + twoPairs());
+
+    //pair func
+    var pair = function(){
+        var count = 0;
+        for(var i = 0; i < pokerHand.length-1; i++){
+            if(pokerHand[i] === pokerHand[i+1]){
+                count++;
+            }
+        }
+        return count === 1;
+    }
+
+    //test
+    console.log('ez 1 pár? ---> ' + pair());
+
+    //kiértékelés
+   if(isRoyalFlush(lastCard)){
+       document.querySelector('#hand').innerHTML += '<br>Royal Flush!';
+   }else if(isStraightFlush()){
+       document.querySelector('#hand').innerHTML += '<br>Straight Flush!';
+   }else if(isFlush()){
+       document.querySelector('#hand').innerHTML += '<br>Flush!';
+   }else if(str()) {
+       document.querySelector('#hand').innerHTML += '<br>Straight!';
+   }else if(isPoker(firstCard, fourthCard)){
+       document.querySelector('#hand').innerHTML += '<br>Poker!';
+   }else if(isFull()){
+       document.querySelector('#hand').innerHTML += '<br>Full House!';
+   }else if(isDrill()){
+       document.querySelector('#hand').innerHTML += '<br>Drill!';
+   }else if(twoPairs()){
+       document.querySelector('#hand').innerHTML += '<br>Two Pairs!';
+   }else if(pair()){
+       document.querySelector('#hand').innerHTML += '<br>Pair!';
+   }else {
+       document.querySelector('#hand').innerHTML += '<br>High Card!';
+   }
+
 </script>
 </body>
 </html>
