@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Poker Hand</title>
+</head>
+<body>
+<h1>Póker kéz</h1>
+<hr>
+<h3> Az 52 lapból álló pakli:</h3>
+    <p id="deck"></p>
+<h3>A kevert pakli:</h3>
+    <p id="shuffled"></p>
+<h3>Az elemelt pakli</h3>
+    <p id="cut"></p>
+<hr>
+
+<h3>A kézben lévő lapok:</h3>
+<h4>Flop:</h4>
+    <h3 id="flop"></h3>
+<h4>Turn:</h4>
+    <h3 id="turn"></h3>
+<h4>River:</h4>
+    <h3 id="river"></h3>
+<h3>A hand:</h3>
+    <h2 id="hand"></h2>
+    <h2 id="handRes"></h2>
+<script>
+    //üres póker pakli
+    var deck = [];
+
+    //figurák
+    var suits = ['&spades;', '&hearts;', '&diams;','&clubs;'];
+    //a lapokhoz tartozó értékek
+    var numbers = [
+                {"key": "2", value: 2},
+                {"key": "3", value: 3},
+                {"key": "4", value: 4},
+                {"key": "5", value: 5},
+                {"key": "6", value: 6},
+                {"key": "7", value: 7},
+                {"key": "8", value: 8},
+                {"key": "9", value: 9},
+                {"key": "X", value: 10},
+                {"key": "J", value: 11},
+                {"key": "Q", value: 12},
+                {"key": "K", value: 13},
+                {"key": "A", value: 14}
+                ];
+
+    // a pakli
+    for (var i = 0; i < suits.length; i++) {
+        for (var j = 0; j < numbers.length; j++) {
+            var card = {
+                suit: suits[i],
+                number: numbers[j],
+                index: Math.floor(Math.random() * 1000) + 1
+            };
+            deck.push(card);
+        }
+    }
+    //pakli megjelenítése
+    console.log(deck.suits);
+    for(var i = 0; i < deck.length; i++){
+        document.querySelector('#deck').innerHTML +=
+            deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
+    }
+
+    // keverés
+    deck.sort(function (card1, card2){
+        return card1.index > card2.index ? 1 : -1;
+    });
+
+    //kevert pakli megjelenítése
+    for(var i = 0; i < deck.length; i++) {
+        document.querySelector('#shuffled').innerHTML +=
+            deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
+    }
+
+    //a kevert pakli emelése
+    var cut = deck.splice(26, 26);
+    var cutted = cut.concat(deck);
+
+   for(var i = 0; i < cutted.length; i++) {
+       document.querySelector('#cut').innerHTML +=
+           cutted[i]['suit'] + ':' + cutted[i]['number'].key + ', ';
+   }
+
+    //a kézben lévő lapok kiválasztása
+
+    // a flop: a pakli végéből egy égető lap leosztása után következő 3 lap
+    var flop = cutted.slice(-4,51);
+    for(var i = 0; i < flop.length; i++) {
+        document.querySelector('#flop').innerHTML +=
+            flop[i]['suit'] + ':' + flop[i]['number'].key + ', ';
+    }
+
+    // a turn
+    var turn = cutted.slice(-6,47);
+    for(var i = 0; i < turn.length; i++) {
+        document.querySelector('#turn').innerHTML +=
+            turn[i]['suit'] + ':' + turn[i]['number'].key + ', ';
+    }
+
+    //a river
+    var river = cutted.slice(-8,45);
+    for(var i = 0; i < river.length; i++) {
+        document.querySelector('#river').innerHTML +=
+            river[i]['suit'] + ':' + river[i]['number'].key + ', ';
+    }
+
+    //a hand együtt
+    var hand = flop.concat(turn, river);
+    for(var i = 0; i < hand.length; i++){
+        document.querySelector('#hand').innerHTML +=
+            hand[i]['suit'] + ':' + hand[i]['number'].key + ', ';
+    }
+/*
+    //hand vizsgálata
+    var handsOrder = ['High Card', 'Pair', 'Double Pair', 'Three of Kind', 'Straight', 'Flush', 'Full House', 'Four of Kind', 'Straight Flush', 'Royal Flush'];
+    var valuesArray = [];
+    var suitsArray = [];
+
+    function checkHand() {
+        console.log('valami');
+        for(var i = 0; i < hand.length; i++) {
+            valuesArray += hand[i]['number'].value;
+        }
+        convertHand();
+        console.log(duplicateCards())
+        switch(duplicateCards()){
+            case '2':
+                hand = '1 Pair';
+                break;
+            case '22':
+                hand = '2 Pairs';
+                break;
+            case '3':
+                hand = '3 of a Kind';
+                break;
+            case '23':
+            case '32':
+                hand = 'Full House';
+                break;
+            case '4':
+                hand = '4 of a Kind';
+                break;
+            case '5':
+                hand = '5 of a Kind';
+                break;
+            default:
+                if(isStraight()){
+                    hand = 'Straight';
+                }
+                if(isAceStraight()){
+                    hand = 'Ace Straight';
+                }
+                break;
+        }
+        if(isFlush()){
+            if(hand){
+                hand += 'and Flush';
+            }
+            else{
+                hand = 'Flush';
+            }
+        }
+        if(!hand){
+            hand = 'nothing...';
+        }
+        document.querySelector('#hand').innerHTML = hand;
+    }
+
+    function convertHand(){
+        for(var i = 0; i < 5; i ++){
+            valuesArray[i] = hand[i] % 13;
+            suitsArray[i] = Math.floor(hand[i] / 13);
+        }
+    }
+
+    function isFlush(){
+        for(var i = 0; i < 4; i ++){
+            if(suitsArray[i] != suitsArray[i+1]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function isStraight(){
+        var lowest = getLowest();
+        for(var i = 1; i < 5; i++){
+            if(occurrencesOf(lowest + i) != 1){
+                return false
+            }
+        }
+        return true;
+    }
+
+    function isAceStraight(){
+        var lowest = 9;
+        for(var i = 1; i < 4; i++){
+            if(occurrencesOf(lowest + i) != 1){
+                return false
+            }
+        }
+        return occurrencesOf(1) == 0;
+    }
+
+    function getLowest(){
+        var min = 12;
+        for(var i = 0; i < valuesArray.length; i++){
+            min = Math.min(min, valuesArray[i]);
+        }
+        return min;
+    }
+
+    function duplicateCards(){
+        var occurrencesFound = [];
+        var result = "";
+        for(var i = 0; i < valuesArray.length; i++){
+            var occurrences = occurrencesOf(valuesArray[i]);
+            if(occurrences > 1 && occurrencesFound.indexOf(valuesArray[i]) == -1){
+                result += occurrences;
+                occurrencesFound.push(valuesArray[i]);
+            }
+        }
+        return result;
+    }
+
+    function occurrencesOf(n){
+        var count = 0;
+        var index = 0;
+        do{
+            index = valuesArray.indexOf(n, index) + 1;
+            if(index == 0){
+                break;
+            }
+            else{
+                count ++;
+            }
+        } while(index < valuesArray.length);
+        return count;
+*/
+</script>
+</body>
+</html>
