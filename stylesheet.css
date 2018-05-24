@@ -1,0 +1,57 @@
+/* poker hand stylesheet */
+/*Todo: kiterjeszteni scss-sassre.*/
+/*Todo: a bem-es logika név-konvenció szerint szervezni az scss-t, különösen ügyelni pseudo selectorokra. <--- onepage bitbucket idevágó kommentjei alapján. */
+/*Todo: sass-lint bekötése? ---- mennyire releváns egy ilyen mini projektnél? */
+/*Todo: scss fiele-ok szétbontása partialokba!--- ???*/
+
+.main {
+  background-color:#3a6841;
+}
+
+.deck-show {
+  display: inline-block;
+  margin-left: 2em;
+  background-color:white;
+  opacity: .7;
+  border-radius: 2px;
+  padding: .7em;
+}
+
+.board-cards {
+  display: inline-block;
+  margin-left:3em;
+  border-radius: 2px;
+  padding: .7em;
+}
+
+.hand-style {
+  border: 1px solid white;
+  padding: .7em;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.black {
+  color: #000;
+}
+
+.red {
+  color: #ff0000;
+}
+
+/* Todo: Ha önmagában a következő selectorokra nincs formázás, csak a pesudo selectorokat használjuk, akkor nincsen rájuk szükség a DOM-ban, ezt javítani.*/
+.spade:before {
+  content: '\02660'; /* Black spade suit - https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
+
+.heart:before {
+  content: '\02665'; /* Black heart suit - https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
+
+.diamond:before {
+  content: '\02666'; /* Black diamond suit - https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
+
+.club:before {
+  content: '\02663'; /* Black club suit - https://www.toptal.com/designers/htmlarrows/symbols/ */
+}
