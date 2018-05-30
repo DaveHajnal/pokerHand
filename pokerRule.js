@@ -1,119 +1,95 @@
 // functions for the examination of hand
 
 
-//straight function
-let isStraight = function(){
-    for(let i = 0; i < pokerHand.length-1; i++){
-        if(pokerHand[i+1] != pokerHand[i-1]){
-            return false;
-        }
-        return true;
+//same function
+let isSame = function(array, sameVal1 = 2, sameVal2 = 1){
+    if(sameVal1 === 1){
+        console.error('Error! Defective parameter ---> no sense for the same value of \'1\', sameVal1 param >= 2');
     }
+    let equalValue1 = 1;
+    let equalValue2 = 1;
+    for(let i = 1; i < array.length; i++){
+        if(array[i] === array[i-1]){
+            equalValue1 += 1;
+            //Todo: átfogalmazni a condition-t mert törik pokernél a kikommentelt rész
+            if((i >= 3 && equalValue1 >= 3 && array[i] !== array[i-2]) /*||
+                (i >= 3 && equalValue1 >= 3 && array[i] !== array[i-3])*/){
+                equalValue1 -=1;
+                equalValue2 +=1;
+            }
+        }
+    }
+    console.log(equalValue1);
+    console.log(equalValue2);
+    //Todo: ezt itt kigyomlálni! Logikailag átrendezni
+    if(sameVal2 > 1){
+        return (equalValue1 === sameVal1 && equalValue2 === sameVal2);
+    }
+    return (equalValue1 === sameVal1);
 };
 
-//same function
-let isSame = function(array) {
-    let counter = 0;
-    for(let i = 0; i < array.length; i++){
-        if (array[i] === array[i + 1]) {
-            counter++;
+//straight function
+let isSequence = function(){
+    for(let i = 1; i < pokerHand.length; i++){
+        if(pokerHand[i]-1 !== pokerHand[i-1]){
+            return false;
         }
     }
-    return  counter === 5;
+    return true;
 };
 
 //Royalflush function
-var isRoyalFlush = function(lastCard) {
+let isRoyalFlush = function() {
     return ((lastCard === 14) &&
-            (isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
-            (isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4])));
-}
+            (isSequence()) &&
+            (isSame(pokerHandSuits, 5)));
+};
 
 //Straightflush function
-var isStraightFlush = function() {
-    if( (lastCard !== 14) &&
-        (isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
-        (isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4]))) {
-        return true;
-    }else {
-        return false;
-    }
-}
+let isStraightFlush = function() {
+    return ((lastCard !== 14) &&
+            (isSequence()) &&
+            (isSame(pokerHandSuits, 5)));
+
+};
 
 //is Poker function
-//Todo:hiba javítsd ki a paramétereket hibás hiányzik...
-var isPoker = function(firstCard, fourthCard) {
-    if (((firstCard === fourthCard) || (secondCard === lastCard))) {
-        return true;
-    } else {
-        return false;
-    }
-}
+let isPoker = function() {
+  return isSame(pokerHand, 4);
+};
 
 //is Straight function
-//Todo: lugikusabb, illeszkedőbb elnevezést adni
-var str = function() {
-    if ((isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard)) &&
-        (!isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4]))) {
-        return true;
-    } else {
-        return false;
-    }
-}
+let isStraight = function() {
+    return isSequence() &&
+        !isSame(pokerHandSuits, 5)
+};
 
 //is Flush function
-var isFlush =function(){
-    if((isSame(pokerHandSuits[0], pokerHandSuits[1], pokerHandSuits[2], pokerHandSuits[3], pokerHandSuits[4])) &&
-        (!isStraight(firstCard, secondCard, thirdCard, fourthCard, lastCard))) {
-        return true;
-    }else {
-        return false;
-    }
-}
+let isFlush = function(){
+    return isSame(pokerHandSuits, 5) &&
+        !isSequence()
+};
 
 //is Drill function
-//Todo: ezt kiszervezni egy köszös számláló funkcióba, ami az alapján adja vissza a találatokat háűny egyforma tételt talál
-var isDrill = function() {
-    var count = 0;
-    for (var i = 0; i < pokerHand.length - 1; i++) {
-        if (pokerHand[i] === pokerHand[i + 2]) {
-            count++
-        }
-    }
-    return count === 1;
-}
+let isDrill = function(){
+    return isSame(pokerHand, 3) &&
+        !isFull();
+};
 
 //is Full function
-var isFull = function() {
-    if (((firstCard === secondCard) && (thirdCard === lastCard)) ||
-        ((firstCard === thirdCard) && (fourthCard === lastCard))) {
-        return true;
-    } else {
-        return false;
-    }
-}
+let isFull = function(){
+    return isSame(pokerHand, 3, 2) ||
+        isSame(pokerHand, 2, 3);
+};
 
 //is two pair function
-//Todo: ezt kiszervezni egy köszös számláló funkcióba, ami az alapján adja vissza a találatokat háűny egyforma tételt talál
-var twoPairs = function() {
-    var count = 0;
-    for(var i = 0; i < pokerHand.length-1; i++) {
-        if((pokerHand[i] === pokerHand[i+1]) &&
-            (pokerHand[i] !== pokerHand[i+2])){
-            count++
-        }
-    }
-    return count === 2;
-}
+let twoPairs = function(){
+    return isSame(pokerHand, 2, 2);
+};
 
 //is pair function
-//Todo: ezt kiszervezni egy köszös számláló funkcióba, ami az alapján adja vissza a találatokat háűny egyforma tételt talál
-var pair = function(){
-    var count = 0;
-    for(var i = 0; i < pokerHand.length-1; i++){
-        if(pokerHand[i] === pokerHand[i+1]){
-            count++;
-        }
-    }
-    return count === 1;
-}
+let pair = function(){
+    return isSame(pokerHand) &&
+        !twoPairs() &&
+        !isFull();
+};
