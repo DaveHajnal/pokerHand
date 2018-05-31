@@ -12,11 +12,14 @@ let isSame = function(array, sameVal1 = 2, sameVal2 = 1){
         if(array[i] === array[i-1]){
             equalValue1 += 1;
             //Todo: átfogalmazni a condition-t mert törik pokernél a kikommentelt rész
-            if((i >= 3 && equalValue1 >= 3 && array[i] !== array[i-2]) /*||
-                (i >= 3 && equalValue1 >= 3 && array[i] !== array[i-3])*/){
+            if(i >= 3 && equalValue1 === 3 && array[i] !== array[i-2]){
                 equalValue1 -=1;
                 equalValue2 +=1;
             }
+            // if(i === 4  && equalValue1 === 4 && array[i] !== array[i-3]){
+            //     equalValue1 -=1;
+            //     equalValue2 +=1;
+            // }
         }
     }
     console.log(equalValue1);
