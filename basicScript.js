@@ -1,10 +1,10 @@
-// basic script
+//Basic script
 
 
-// empty deck
+//Empty deck
 let deck = [];
 
-// suits
+//Suits
 let suits = [
                 '<span class="black spade"></span>',
                 '<span class="red heart"></span>',
@@ -12,7 +12,7 @@ let suits = [
                 '<span class="black club"></span>'
             ];
 
-// the values of the cards
+//Values of the cards
 let numbers = [
                 {key: "2", value: 2},
                 {key: "3", value: 3},
@@ -29,9 +29,9 @@ let numbers = [
                 {key: "A", value: 14}
               ];
 
-// the compilation of the deck
-for (let i = 0; i < suits.length; i++) {
-    for (let j = 0; j < numbers.length; j++) {
+//Compilation of the deck
+for (let i = 0; i < suits.length; i++){
+    for (let j = 0; j < numbers.length; j++){
         let card = {
             suit: suits[i],
             number: numbers[j],
@@ -41,7 +41,7 @@ for (let i = 0; i < suits.length; i++) {
     }
 }
 
-//revealing the deck
+//Revealing the deck
 for(let i = 0; i < deck.length; i++){
     document.querySelector('#deck').innerHTML +=
         deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
