@@ -6,7 +6,6 @@ console.log(pokerHandSuits);
 console.log(pokerHand); //revealing the hand after sorting
 
 //evaluation of the hand
-//Todo: a fenti paraméter javítások szerint a tesztet is javítani.
 console.log('Straight?      ---> ' + isSequence());
 console.log('Same symbol?   ---> ' + isSame(pokerHandSuits,5));
 
