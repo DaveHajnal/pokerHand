@@ -13,25 +13,25 @@ for(let i = 0; i < flop.length; i++) {
 // turn (after discard a burning card)
 
 let turn = cut.slice(-6,47);
-for(let j = 0; j < turn.length; j++) {
+for(let i = 0; i < turn.length; i++) {
     document.querySelector('#turn').innerHTML +=
-        turn[j]['suit'] + ':' + turn[j]['number'].key + ', ';
+        turn[i]['suit'] + ':' + turn[i]['number'].key + ', ';
 }
 
 //river (after discard a burning card)
 
 let river = cut.slice(-8,45);
-for(var k = 0; k < river.length; k++) {
+for(let i = 0; i < river.length; i++) {
     document.querySelector('#river').innerHTML +=
-        river[k]['suit'] + ':' + river[k]['number'].key + ', ';
+        river[i]['suit'] + ':' + river[i]['number'].key + ', ';
 }
 
 //  ****HAND****
 
-var hand = flop.concat(turn, river);
-for(var l = 0; l < hand.length; l++) {
+let hand = flop.concat(turn, river);
+for(let i = 0; i < hand.length; i++) {
     document.querySelector('#hand').innerHTML +=
-        hand[l]['suit'] + ':' + hand[l]['number'].key + ', ';
+        hand[i]['suit'] + ':' + hand[i]['number'].key + ', ';
 }
 
 //Todo: megnézni, hogy ennek mi a létjogusultsága itt!!!
@@ -51,19 +51,20 @@ for(var l = 0; l < hand.length; l++) {
 
 const pokerHand = [];
 
-for(var m = 0; m < hand.length; m++) {
-    pokerHand.push(hand[m]['number'].value);
+for(let i = 0; i < hand.length; i++) {
+    pokerHand.push(hand[i]['number'].value);
 }
 
 const pokerHandSuits = [];
 
-for(var n = 0; n < hand.length; n++) {
-    pokerHandSuits.push(hand[n]['suit']);
+for(let i = 0; i < hand.length; i++) {
+    pokerHandSuits.push(hand[i]['suit']);
 }
 
 //sorting of the values of pokerhand
 pokerHand.sort(function(a, b){return a - b});
 
+//Todo: itt ezekre a vaáltozókra nincs szükség!
 //variables for each card in pokerhand
 var firstCard   = pokerHand[0];
 var secondCard  = pokerHand[1];

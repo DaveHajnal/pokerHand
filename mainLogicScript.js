@@ -2,7 +2,7 @@
 
 
 //Same function
-let isSame = function(array, sameVal1 = 2, sameVal2 = 1){
+const isSame = function(array, sameVal1 = 2, sameVal2 = 1){
     if(sameVal1 === 1){
         console.error('Error! Defective parameter ---> no sense for the same value of \'1\', 5 >= sameVal1 param >= 2');
     }
@@ -27,7 +27,7 @@ let isSame = function(array, sameVal1 = 2, sameVal2 = 1){
 };
 
 //Sequence function
-let isSequence = function(){
+const isSequence = function(){
     for(let i = 1; i < pokerHand.length; i++){
         if(pokerHand[i]-1 !== pokerHand[i-1]){
             return false;
