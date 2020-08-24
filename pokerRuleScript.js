@@ -3,14 +3,14 @@
 
 //Royal flush function
 let isRoyalFlush = function(){
-    return lastCard === 14 &&
+    return pokerHand[4] === 14 &&
             isSequence() &&
             isSame(pokerHandSuits, 5);
 };
 
 //Straight flush function
 let isStraightFlush = function(){
-    return lastCard !== 14 &&
+    return pokerHand[4] !== 14 &&
             isSequence() &&
             isSame(pokerHandSuits, 5);
 };

@@ -1,6 +1,6 @@
 // select cards of the hand
 
-// the flop: the next 3 cards from the end of the deck after discard a burning card
+// flop (the next 3 cards from the end of the deck after discard a burning card)
 
 let flop = (cut.slice(-4,51));
 flop.reverse();
@@ -34,18 +34,28 @@ for(let i = 0; i < hand.length; i++) {
         hand[i]['suit'] + ':' + hand[i]['number'].key + ', ';
 }
 
-//Todo: megnézni, hogy ennek mi a létjogusultsága itt!!!
 //   ****TEST****
 
-       // const mockRoyalFlush = [
-       //     {index: 8,  suit: '&hearts;', number: {key: '10', value: 10}},
-       //     {index: 65, suit: '&clubs;', number: {key: 'J', value: 14}},
-       //     {index: 49, suit: '&clubs;', number: {key: 'Q', value: 12}},
-       //     {index: 72, suit: '&clubs;', number: {key: 'K', value: 11}},
-       //     {index: 33, suit: '&clubs;', number: {key: 'A', value: 13}}
-       // ];
-       //
-       // var hand = mockRoyalFlush;
+//        const mockRoyalFlush = [
+//            {index: 8,  suit: '&hearts;', number: {key: '2', value: 2}},
+//            {index: 65, suit: '&clubs;', number: {key: '3', value: 3}},
+//            {index: 49, suit: '&clubs;', number: {key: '5', value: 5}},
+//            {index: 72, suit: '&clubs;', number: {key: '4', value: 4}},
+//            {index: 33, suit: '&clubs;', number: {key: 'A', value: 14}}
+//        ];
+//
+// const pokerHand = [];
+//
+// for (let i = 0; i < mockRoyalFlush.length; i++){
+//     pokerHand.push(mockRoyalFlush[i]['number'].value);
+// }
+//
+// const pokerHandSuits = [];
+//
+// for (let i = 0; i < mockRoyalFlush.length; i++) {
+//     pokerHandSuits.push(mockRoyalFlush[i]['suit']);
+// }
+
 
 // result of hand
 
@@ -61,13 +71,22 @@ for(let i = 0; i < hand.length; i++) {
     pokerHandSuits.push(hand[i]['suit']);
 }
 
-//sorting of the values of pokerhand
-pokerHand.sort(function(a, b){return a - b});
+// sorting of the values of pokerhand
 
-//Todo: itt ezekre a vaáltozókra nincs szükség!
-//variables for each card in pokerhand
-var firstCard   = pokerHand[0];
-var secondCard  = pokerHand[1];
-var thirdCard   = pokerHand[2];
-var fourthCard  = pokerHand[3];
-var lastCard    = pokerHand[4];
+    const Sorting = function (array) {
+        array.sort(function (a, b) {
+            return a - b
+        });
+        if (pokerHand[4] === 14 &&
+            pokerHand[0] === 2 &&
+            pokerHand[1] === 3 &&
+            pokerHand[2] === 4 &&
+            pokerHand[3] === 5) {
+            pokerHand[4] = 1;
+            array.sort(function (a, b) {
+                return a - b
+            });
+        }
+    };
+
+    Sorting(pokerHand);

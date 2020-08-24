@@ -81,7 +81,7 @@
     ];
 
 
-    const mockRoyalFlush = [
+   const mockRoyalFlush = [
         {index: 8, suit: 'C', numbers: {key: '10', value: 10}},
         {index: 65, suit: 'C', numbers: {key: 'J', value: 11}},
         {index: 49, suit: 'C', numbers: {key: 'Q', value: 12}},

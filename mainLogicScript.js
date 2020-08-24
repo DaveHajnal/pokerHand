@@ -17,9 +17,6 @@ const isSame = function(array, sameVal1 = 2, sameVal2 = 1){
             }
         }
     }
-    //test
-    // console.log(equalValue1);
-    // console.log(equalValue2);
     if(sameVal2 > 1){
         return (equalValue1 === sameVal1 && equalValue2 === sameVal2);
     }

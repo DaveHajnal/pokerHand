@@ -2,8 +2,8 @@
 
 console.log(deck); //revealing the deck
 console.log(hand); //revealing the hand
-console.log(pokerHandSuits);
-console.log(pokerHand); //revealing the hand after sorting
+console.log('Hand suits' + pokerHandSuits);
+console.log('Hand values ---> ' + pokerHand); //revealing the hand after sorting
 
 //evaluation of the hand
 console.log('Straight?       ---> ' + isSequence());
