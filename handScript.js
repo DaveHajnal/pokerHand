@@ -2,7 +2,7 @@
 
 // flop (the next 3 cards from the end of the deck after discard a burning card)
 
-let flop = (cut.slice(-4,51));
+let flop = (cut.slice(-4,cut.length-1));
 flop.reverse();
 
 for(let i = 0; i < flop.length; i++) {
@@ -12,7 +12,7 @@ for(let i = 0; i < flop.length; i++) {
 
 // turn (after discard a burning card)
 
-let turn = cut.slice(-6,47);
+let turn = cut.slice(-6,cut.length-5);
 for(let i = 0; i < turn.length; i++) {
     document.querySelector('#turn').innerHTML +=
         turn[i]['suit'] + ':' + turn[i]['number'].key + ', ';
@@ -20,7 +20,7 @@ for(let i = 0; i < turn.length; i++) {
 
 //river (after discard a burning card)
 
-let river = cut.slice(-8,45);
+let river = cut.slice(-8,cut.length-7);
 for(let i = 0; i < river.length; i++) {
     document.querySelector('#river').innerHTML +=
         river[i]['suit'] + ':' + river[i]['number'].key + ', ';

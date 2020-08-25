@@ -29,25 +29,46 @@ let numbers = [
                 {key: "A", value: 14}
               ];
 
-//Compilation of the deck
-for (let i = 0; i < suits.length; i++){
-    for (let j = 0; j < numbers.length; j++){
-        let card = {
-            suit: suits[i],
-            number: numbers[j],
-            index: Math.floor(Math.random() * 1000) + 1
-        };
-        deck.push(card);
+
+//Compilation of the deck + lvl III upgrade
+
+const compDeck = function(deckNum = 1){
+    if( deckNum === 0){
+        console.error('Error! Defective parameter ---> no sense for the deckNum of \'0\',  deckNum param >= 1');
     }
-}
+    console.log('Number of (the) deck(s): ---> ' + deckNum);
+    for(let i = 0; i < deckNum; i++){
+        for (let j = 0; j < suits.length; j++){
+            for (let k = 0; k < numbers.length; k++){
+                let card = {
+                    suit: suits[j],
+                    number: numbers[k],
+                    index: Math.floor(Math.random() * 1000) + 1
+                };
+                deck.push(card);
+            }
+
+        }
+    }
+};
+
+compDeck(3);
 
 //Revealing the deck
+
+let iCount = 0;
+
 for(let i = 0; i < deck.length; i++){
     document.querySelector('#deck').innerHTML +=
         deck[i]['suit'] + ':' + deck[i]['number'].key + ', ';
-    if( i === 12 ||
-        i === 25 ||
-        i === 38 ) {
+        iCount += 1;
+    if(iCount % 52 === 0){
+        document.querySelector('#deck').innerHTML += '<br><br>';
+        iCount = 0;
+    } else if(iCount % 13 === 0){
         document.querySelector('#deck').innerHTML += '<br>';
     }
 }
+
+//test
+console.log(iCount);
